@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  db_cyber_intel:
+    image: postgis/postgis:16-3.4
+    container_name: db_cyber_intel
+    restart: always
+    environment:
+      POSTGRES_DB: db_cyber_intel
+      POSTGRES_USER: investigator
+      POSTGRES_PASSWORD: SombraDigital_Pass2026!
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  postgres_data:

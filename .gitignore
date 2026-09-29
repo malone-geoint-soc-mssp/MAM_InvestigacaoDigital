@@ -1,0 +1,21 @@
+# Python / Virtual Environment
+.venv/
+__pycache__/
+*.py[cod]
+*.env
+
+# VSCode
+.vscode/
+
+# Evidências e Provas (Restrição ISO/IEC 27037)
+casos/**/raw_evidence/*
+!casos/**/raw_evidence/.gitkeep
+casos/**/processed/*
+!casos/**/processed/.gitkeep
+casos/**/reports/*
+!casos/**/reports/.gitkeep
+
+# Docker e QGIS
+postgres_data/
+*.qgz~
+*.log
