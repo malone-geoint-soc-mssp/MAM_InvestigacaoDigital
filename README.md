@@ -1,12 +1,12 @@
 # 🛡️ MAM - Laboratório Forense Digital, GeoINT & Web Cyber Range
 
-### 📋 Caso Prático: Operação Sombra Digital
+### Caso Prático: Operação Sombra Digital
 * **Investigador / Lead Analyst:** Eng.º Malone Manuel
 * **Conformidade:** ISO/IEC 27037 (Cadeia de Custódia e Integridade da Prova) & Diretivas APD (Proteção de Dados)
 
 ---
 
-## 🏛️ Sobre o Projeto
+## Sobre o Projeto
 
 Ambiente isolado de triagem, preservação e análise de evidências digitais (logs de rede, cabeçalhos de e-mail e metadados EXIF) com geolocalização e mapas de calor de ameaças em tempo real, integrado com um **Laboratório de Simulação e Hardening Web (PHP 8.3 / Nginx)**.
 
@@ -23,7 +23,7 @@ Ambiente isolado de triagem, preservação e análise de evidências digitais (l
 
 ---
 
-## 🚀 Como Executar o Laboratório
+## Como Executar o Laboratório
 
 ### 1. Ativar o Ambiente Virtual e Subir a Stack Docker
 
