@@ -1,19 +1,65 @@
-version: '3.8'
-
 services:
+  # ----------------------------------------------------------------------------
+  # MÓDULO 1: BASE DE DADOS ESPACIAL & FORENSE (POSTGIS / POSTGRESQL 16)
+  # ----------------------------------------------------------------------------
   db_cyber_intel:
     image: postgis/postgis:16-3.4
     container_name: db_cyber_intel
     restart: always
     environment:
-      POSTGRES_DB: db_cyber_intel
-      POSTGRES_USER: investigator
-      POSTGRES_PASSWORD: SombraDigital_Pass2026!
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "5439:5432"
+      # Porta parametrizada via .env (Padrão 5439)
+      - "${POSTGRES_PORT:-5439}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - mam_network
+
+  # ----------------------------------------------------------------------------
+  # MÓDULO 2: MOTOR DE APLICAÇÃO PHP 8.3-FPM (HARDENING DE RUNTIME - APD)
+  # ----------------------------------------------------------------------------
+  php_lab_app:
+    image: php:8.3-fpm-alpine
+    container_name: php_lab_app
+    restart: always
+    volumes:
+      # Mapeia a aplicacao PHP vulneravel/testes para a raiz do container
+      - ./web_lab/html:/var/www/html
+      # Injeta a configuracao de Hardening (disable_functions e open_basedir)
+      - ./web_lab/php/php.ini:/usr/local/etc/php/php.ini
+    networks:
+      - mam_network
+
+  # ----------------------------------------------------------------------------
+  # MÓDULO 3: SERVIDOR WEB NGINX (LABORATÓRIO DE MITIGAÇÃO)
+  # ----------------------------------------------------------------------------
+  nginx_lab_server:
+    image: nginx:alpine
+    container_name: nginx_lab_server
+    restart: always
+    ports:
+      # Porta do host parametrizada via .env (Padrão 8090)
+      - "${WEB_LAB_PORT:-8090}:80"
+    volumes:
+      # Mapeia o diretorio web do site
+      - ./web_lab/html:/var/www/html
+      # Injeta a configuracao de regras de bloqueio e proxy FastCGI
+      - ./web_lab/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php_lab_app
+    networks:
+      - mam_network
+
+# ------------------------------------------------------------------------------
+# REDES E VOLUMES PERSISTENTES
+# ------------------------------------------------------------------------------
+networks:
+  mam_network:
+    driver: bridge
 
 volumes:
   postgres_data:

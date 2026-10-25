@@ -19,3 +19,6 @@ casos/**/reports/*
 postgres_data/
 *.qgz~
 *.log
+
+# Copias de seguranca locais
+backups/
